@@ -199,18 +199,28 @@ const ActiveOrganizer = () => {
                         </div>
                         {!confirming && (
                             <div className={styles.row}>
-                                <div
-                                    className={classes(styles.button, styles.danger, styles.last)}
-                                    onClick={() => askReset(true)}
+                                <Tooltip
+                                    tooltip={text(
+                                        "RestoreAllDesc",
+                                        "Erases all settings of the mod: order, groups, edited names, positions and sizes. The toolbars go back to alphabetical order."
+                                    )}
                                 >
-                                    {text("RestoreAll", "Restore everything (full reset)")}
-                                </div>
+                                    <div
+                                        className={classes(styles.button, styles.danger, styles.last)}
+                                        onClick={() => askReset(true)}
+                                    >
+                                        {text("RestoreAll", "Reset Settings")}
+                                    </div>
+                                </Tooltip>
                             </div>
                         )}
                         {confirming && (
                             <div className={styles.confirm}>
                                 <div className={styles.confirmText}>
-                                    {text("RestoreAllConfirm", "This erases the order, the edited names and every customization. Continue?")}
+                                    {text(
+                                        "RestoreAllConfirm",
+                                        "This erases all settings of the mod: order, groups, edited names, positions and sizes. Continue?"
+                                    )}
                                 </div>
                                 <div className={styles.row}>
                                     <div className={styles.spacer} />

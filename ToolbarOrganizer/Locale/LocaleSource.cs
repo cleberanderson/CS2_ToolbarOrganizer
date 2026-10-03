@@ -43,11 +43,11 @@ namespace ToolbarOrganizer.Locale
                 { m_Setting.GetOptionGroupLocaleID(Setting.kMaintenanceGroup), "Maintenance" },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.Enabled)), "Enable Toolbar Organizer" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.Enabled)), "Off on a fresh install. When turned off, the toolbars go back to the game default and the saved layout is kept." },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.Enabled)), "Turns the mod on or off. With the mod off, the toolbars go back to the game default and the settings are kept." },
 
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ResetAll)), "Reset all settings" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.ResetAll)), "Erases the order, the edited names and every customization of the toolbars." },
-                { m_Setting.GetOptionWarningLocaleID(nameof(Setting.ResetAll)), "This erases the order, the edited names and every customization of the toolbars. Continue?" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ResetAll)), "Reset Settings" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.ResetAll)), "Erases all settings of the mod: order, groups, edited names, positions and sizes. The toolbars go back to alphabetical order." },
+                { m_Setting.GetOptionWarningLocaleID(nameof(Setting.ResetAll)), "This erases all settings of the mod: order, groups, edited names, positions and sizes. Continue?" },
 
                 { Ui("Title"), "Toolbar Organizer" },
                 { Ui("AutoSaved"), "Every change is saved immediately" },
@@ -57,8 +57,9 @@ namespace ToolbarOrganizer.Locale
                 { Ui("OrderZA"), "Z-A" },
                 { Ui("Reorder"), "Reorder" },
                 { Ui("General"), "General" },
-                { Ui("RestoreAll"), "Restore everything (full reset)" },
-                { Ui("RestoreAllConfirm"), "This erases the order, the edited names and every customization. Continue?" },
+                { Ui("RestoreAll"), "Reset Settings" },
+                { Ui("RestoreAllDesc"), "Erases all settings of the mod: order, groups, edited names, positions and sizes. The toolbars go back to alphabetical order." },
+                { Ui("RestoreAllConfirm"), "This erases all settings of the mod: order, groups, edited names, positions and sizes. Continue?" },
                 { Ui("Cancel"), "Cancel" },
                 { Ui("Confirm"), "Confirm" },
             };
@@ -75,11 +76,11 @@ namespace ToolbarOrganizer.Locale
                 { m_Setting.GetOptionGroupLocaleID(Setting.kMaintenanceGroup), "Manutenção" },
 
                 { m_Setting.GetOptionLabelLocaleID(nameof(Setting.Enabled)), "Ativar o Toolbar Organizer" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.Enabled)), "Vem desativado na primeira instalação. Ao desativar, as barras voltam ao padrão do jogo e a configuração gravada é mantida." },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.Enabled)), "Ativa ou desativa o mod. Com o mod desativado, as barras voltam ao padrão do jogo e as configurações são mantidas." },
 
-                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ResetAll)), "Redefinir todas as configurações" },
-                { m_Setting.GetOptionDescLocaleID(nameof(Setting.ResetAll)), "Apaga a ordem, os nomes editados e todas as personalizações das barras." },
-                { m_Setting.GetOptionWarningLocaleID(nameof(Setting.ResetAll)), "Isso apaga a ordem, os nomes editados e todas as personalizações das barras. Continuar?" },
+                { m_Setting.GetOptionLabelLocaleID(nameof(Setting.ResetAll)), "Redefinir Configurações" },
+                { m_Setting.GetOptionDescLocaleID(nameof(Setting.ResetAll)), "Apaga todas as configurações do mod: ordem, grupos, nomes editados, posições e dimensões. As barras voltam à ordem alfabética." },
+                { m_Setting.GetOptionWarningLocaleID(nameof(Setting.ResetAll)), "Isso apaga todas as configurações do mod: ordem, grupos, nomes editados, posições e dimensões. Continuar?" },
 
                 { Ui("Title"), "Toolbar Organizer" },
                 { Ui("AutoSaved"), "Cada alteração é gravada na hora" },
@@ -89,8 +90,9 @@ namespace ToolbarOrganizer.Locale
                 { Ui("OrderZA"), "Z-A" },
                 { Ui("Reorder"), "Reordenar" },
                 { Ui("General"), "Geral" },
-                { Ui("RestoreAll"), "Restaurar tudo (reset total)" },
-                { Ui("RestoreAllConfirm"), "Isso apaga a ordem, os nomes editados e todas as personalizações. Continuar?" },
+                { Ui("RestoreAll"), "Redefinir Configurações" },
+                { Ui("RestoreAllDesc"), "Apaga todas as configurações do mod: ordem, grupos, nomes editados, posições e dimensões. As barras voltam à ordem alfabética." },
+                { Ui("RestoreAllConfirm"), "Isso apaga todas as configurações do mod: ordem, grupos, nomes editados, posições e dimensões. Continuar?" },
                 { Ui("Cancel"), "Cancelar" },
                 { Ui("Confirm"), "Confirmar" },
             };

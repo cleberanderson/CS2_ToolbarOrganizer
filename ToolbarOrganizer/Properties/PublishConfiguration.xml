@@ -4,7 +4,7 @@
 	<!--Name of the mod to display to players-->
 	<DisplayName Value="Toolbar Organizer" />
 	<!--Short description of the mod-->
-	<ShortDescription Value="Organizes the buttons that mods add to the two top toolbars." />
+	<ShortDescription Value="Order, group and collapse the mod buttons on the top toolbars" />
 	<!--Long description of the mod. Single line or multi line. Supports minimal markdown subset-->
 	<LongDescription>
 Toolbar Organizer organizes the buttons that other mods add to the two top toolbars, so they stop overlapping.
