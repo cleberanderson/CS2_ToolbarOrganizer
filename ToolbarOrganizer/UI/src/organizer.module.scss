@@ -5,6 +5,7 @@
 $panel: #18202e;
 $border: #2c3a52;
 $button: #1b2434;
+$button-hover: #243248;
 $button-border: #5a6f94;
 $accent: #4bc3f1;
 $warning: #ff9a3c;
@@ -44,6 +45,136 @@ $text-dark: #0e1420;
 .mod-icon {
     width: 34rem;
     height: 34rem;
+}
+
+// Collapse button of each bar. The one of the left bar sits right after the mod button; the one of the
+// right bar is placed by the code next to the game's fixed buttons of that bar.
+.toggle-host-left {
+    position: absolute;
+    top: 0;
+    left: 46rem;
+    display: flex;
+    flex-direction: row;
+}
+
+.toggle-host-right {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: none;
+    flex-direction: row;
+}
+
+.toggle {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 40rem;
+    height: 40rem;
+    background-color: $button;
+    border: 1rem solid $accent;
+    border-radius: 6rem;
+}
+
+.toggle:hover {
+    background-color: $button-hover;
+}
+
+.chevron {
+    width: 12rem;
+    height: 16rem;
+}
+
+// "+" button at the end of the last row of a bar: opens a panel with the icons that do not fit in the
+// rows. The icons are the real buttons of the mods, brought under the button by the code. The background of
+// the panel is made of pieces drawn around the places of the icons, never over them, so every icon stays
+// visible and keeps receiving its own clicks. The panel is 3 columns by 3 rows as the standard.
+.plus-host {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.toggle.open {
+    background-color: $button-hover;
+}
+
+.plus {
+    color: $accent;
+    font-size: 26rem;
+    font-weight: bold;
+}
+
+.more-piece {
+    position: absolute;
+    background-color: $panel;
+}
+
+// Border of the panel: four lines drawn over the outer strips of the background.
+.more-edge {
+    position: absolute;
+    background-color: $border;
+}
+
+// Edge of the panel that is dragged to change its number of columns: the side that is free to grow.
+.more-grip-host {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+}
+
+.more-grip {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.more-grip-mark {
+    width: 4rem;
+    height: 32rem;
+    background-color: $button-border;
+    border-radius: 2rem;
+}
+
+.more-grip:hover .more-grip-mark,
+.more-grip.dragging .more-grip-mark {
+    background-color: $accent;
+}
+
+// Number of hidden buttons, shown on the collapse button while its bar is collapsed.
+.badge {
+    position: absolute;
+    top: -6rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-width: 22rem;
+    height: 22rem;
+    padding: 0 5rem;
+    background-color: $accent;
+    border-radius: 11rem;
+    color: $text-dark;
+    font-size: 12rem;
+    font-weight: bold;
+    pointer-events: none;
+}
+
+.badge-left {
+    right: -8rem;
+}
+
+.badge-right {
+    left: -8rem;
 }
 
 .menu {
@@ -97,8 +228,53 @@ $text-dark: #0e1420;
 }
 
 .count {
+    margin-left: 8rem;
     font-size: 12rem;
     color: $accent;
+}
+
+// "Hide" switch of each bar, at the end of the section title row.
+.hide-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.hide-label {
+    margin-right: 8rem;
+    font-size: 12rem;
+    color: $text;
+}
+
+.hide-switch {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    width: 36rem;
+    height: 20rem;
+    padding: 0 3rem;
+    background-color: $button;
+    border: 1rem solid $button-border;
+    border-radius: 10rem;
+}
+
+.hide-switch.on {
+    justify-content: flex-end;
+    background-color: $accent;
+    border-color: $accent;
+}
+
+.knob {
+    width: 12rem;
+    height: 12rem;
+    background-color: $text-dim;
+    border-radius: 6rem;
+}
+
+.hide-switch.on .knob {
+    background-color: $text-dark;
 }
 
 .row {

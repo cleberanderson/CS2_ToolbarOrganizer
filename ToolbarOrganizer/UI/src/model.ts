@@ -11,8 +11,16 @@ export type Side = "left" | "right";
 /** Order of the icons of a bar. "manual" arrives with the edit mode (stage 3). */
 export type OrderMode = "az" | "za";
 
+/** Columns of the panel opened by the "+" button of a bar: the standard, which is also the least, and the most. */
+export const MORE_COLUMNS_MIN = 3;
+export const MORE_COLUMNS_MAX = 10;
+
 export interface BarLayout {
     mode: OrderMode;
+    /** True while the bar is collapsed: its buttons are hidden, the collapse button stays. */
+    hidden: boolean;
+    /** Columns of the panel of the "+" button, as left by the user when dragging its edge. */
+    moreColumns: number;
 }
 
 /** Saved layout (ModsData/ToolbarOrganizer/layout.json). Unknown fields are kept untouched. */
@@ -27,11 +35,24 @@ export interface Layout {
 export const LAYOUT_VERSION = 1;
 
 export function defaultLayout(): Layout {
-    return { v: LAYOUT_VERSION, left: { mode: "az" }, right: { mode: "az" }, names: {} };
+    return {
+        v: LAYOUT_VERSION,
+        left: { mode: "az", hidden: false, moreColumns: MORE_COLUMNS_MIN },
+        right: { mode: "az", hidden: false, moreColumns: MORE_COLUMNS_MIN },
+        names: {},
+    };
 }
 
 function readMode(value: unknown): OrderMode {
     return value === "za" ? "za" : "az";
+}
+
+/** Keeps a number of columns inside the allowed range; anything else gives the standard. */
+export function clampColumns(value: unknown): number {
+    if (typeof value !== "number" || !isFinite(value)) {
+        return MORE_COLUMNS_MIN;
+    }
+    return Math.max(MORE_COLUMNS_MIN, Math.min(MORE_COLUMNS_MAX, Math.round(value)));
 }
 
 function isObject(value: unknown): value is Record<string, any> {
@@ -66,8 +87,8 @@ export function parseLayout(json: string): Layout {
         return {
             ...raw,
             v: LAYOUT_VERSION,
-            left: { ...left, mode: readMode(left.mode) },
-            right: { ...right, mode: readMode(right.mode) },
+            left: { ...left, mode: readMode(left.mode), hidden: left.hidden === true, moreColumns: clampColumns(left.moreColumns) },
+            right: { ...right, mode: readMode(right.mode), hidden: right.hidden === true, moreColumns: clampColumns(right.moreColumns) },
             names,
         };
     } catch (e) {
