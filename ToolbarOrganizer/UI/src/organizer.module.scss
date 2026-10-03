@@ -1,6 +1,8 @@
 // "Projeto" theme (default). It applies only to the mod's own elements; the buttons of other mods keep
 // the look the game gives them. Sizes are in rem: in this game 1rem is one pixel at 1920 wide.
 // The game UI engine lays everything out with flexbox, so every box states its display and direction.
+// The menu follows screen 17 of the project sketch and the edit mode follows screen 8: same sizes, same
+// colors, same order of the parts. The engine has no "gap" between flex items: the spaces are margins.
 
 $panel: #18202e;
 $border: #2c3a52;
@@ -10,8 +12,11 @@ $button-border: #5a6f94;
 $accent: #4bc3f1;
 $warning: #ff9a3c;
 $text: #e6eef8;
-$text-dim: #9fb0c8;
-$text-dark: #0e1420;
+$warning-text: #ffb877;
+$text-dim: #a9b6c9;
+$text-dark: #0b1622;
+$field: #0f1622;
+$banner-dark: #1a1206;
 
 .root {
     position: relative;
@@ -37,9 +42,17 @@ $text-dark: #0e1420;
     border-radius: 6rem;
 }
 
-.mod-button:hover,
-.mod-button.open {
+.mod-button:hover {
     border-color: $accent;
+}
+
+.mod-button.open {
+    border: 2rem solid $accent;
+}
+
+// Edit mode on: the mod button stays highlighted, with the menu open or closed.
+.mod-button.editing {
+    border: 3rem solid $warning;
 }
 
 .mod-icon {
@@ -179,38 +192,63 @@ $text-dark: #0e1420;
 
 .menu {
     position: absolute;
-    top: 46rem;
+    top: 48rem;
     left: 0;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    width: 320rem;
-    padding: 12rem;
+    width: 480rem;
+    padding: 18rem;
     background-color: $panel;
     border: 1rem solid $border;
-    border-radius: 6rem;
+    border-radius: 8rem;
+    box-shadow: 0 8rem 24rem rgba(0, 0, 0, 0.35);
     color: $text;
     font-size: 14rem;
 }
 
-.title {
-    font-size: 16rem;
-    font-weight: bold;
-    color: $text;
+// Name of the mod and, on the same line, at the right, the information mark.
+.head {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.sub {
-    margin-top: 2rem;
-    font-size: 12rem;
+// Information mark: a small circle with "i" or "?"; its text shows while the mouse is over it.
+.info-mark {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: 22rem;
+    height: 22rem;
+    border: 1rem solid $text-dim;
+    border-radius: 11rem;
     color: $text-dim;
+    font-size: 13rem;
+    font-weight: 700;
+}
+
+.info-mark:hover {
+    border-color: $accent;
+    color: $accent;
+}
+
+.title {
+    flex-shrink: 0;
+    font-size: 18rem;
+    font-weight: 700;
+    color: $text;
+    white-space: nowrap;
 }
 
 .section {
     display: flex;
     flex-direction: column;
-    margin-top: 12rem;
-    padding-top: 10rem;
-    border-top: 1rem solid $border;
+    margin-top: 16rem;
 }
 
 .section-head {
@@ -218,19 +256,12 @@ $text-dark: #0e1420;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 8rem;
 }
 
-.label {
-    font-size: 12rem;
-    text-transform: uppercase;
-    color: $text-dim;
-}
-
-.count {
-    margin-left: 8rem;
-    font-size: 12rem;
-    color: $accent;
+.section-title {
+    font-size: 14rem;
+    font-weight: 700;
+    color: $text;
 }
 
 // "Hide" switch of each bar, at the end of the section title row.
@@ -238,11 +269,13 @@ $text-dark: #0e1420;
     display: flex;
     flex-direction: row;
     align-items: center;
+    height: 44rem;
 }
 
 .hide-label {
-    margin-right: 8rem;
-    font-size: 12rem;
+    margin-right: 10rem;
+    font-size: 14rem;
+    font-weight: 600;
     color: $text;
 }
 
@@ -252,12 +285,12 @@ $text-dark: #0e1420;
     align-items: center;
     justify-content: flex-start;
     box-sizing: border-box;
-    width: 36rem;
-    height: 20rem;
+    width: 44rem;
+    height: 24rem;
     padding: 0 3rem;
     background-color: $button;
     border: 1rem solid $button-border;
-    border-radius: 10rem;
+    border-radius: 12rem;
 }
 
 .hide-switch.on {
@@ -267,24 +300,70 @@ $text-dark: #0e1420;
 }
 
 .knob {
-    width: 12rem;
-    height: 12rem;
+    width: 16rem;
+    height: 16rem;
     background-color: $text-dim;
-    border-radius: 6rem;
+    border-radius: 8rem;
 }
 
 .hide-switch.on .knob {
     background-color: $text-dark;
 }
 
+// One line of controls: the order selector takes the room left by the buttons at its right.
 .row {
     display: flex;
     flex-direction: row;
     align-items: center;
 }
 
+.row.controls {
+    margin-top: 8rem;
+}
+
 .spacer {
     flex-grow: 1;
+}
+
+// Order selector: its options joined in a single piece, the chosen one filled.
+.segment {
+    display: flex;
+    flex-direction: row;
+    flex: 1 0 0;
+    margin-right: 8rem;
+}
+
+.seg {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex: 1 0 0;
+    box-sizing: border-box;
+    height: 44rem;
+    background-color: $button;
+    border: 1rem solid $button-border;
+    border-left-width: 0;
+    color: $text;
+    font-size: 14rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.seg.first {
+    border-left-width: 1rem;
+    border-radius: 6rem 0 0 6rem;
+}
+
+.seg.end {
+    border-radius: 0 6rem 6rem 0;
+}
+
+.seg.active {
+    background-color: $accent;
+    border-color: $accent;
+    color: $text-dark;
+    font-weight: 700;
 }
 
 .button {
@@ -292,15 +371,17 @@ $text-dark: #0e1420;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
     box-sizing: border-box;
-    height: 28rem;
-    margin-right: 6rem;
+    height: 44rem;
+    margin-right: 8rem;
     padding: 0 12rem;
     background-color: $button;
     border: 1rem solid $button-border;
-    border-radius: 4rem;
+    border-radius: 6rem;
     color: $text;
-    font-size: 13rem;
+    font-size: 14rem;
+    font-weight: 600;
     white-space: nowrap;
 }
 
@@ -312,11 +393,12 @@ $text-dark: #0e1420;
     background-color: $accent;
     border-color: $accent;
     color: $text-dark;
+    font-weight: 700;
 }
 
 .button.danger {
     border-color: $warning;
-    color: $warning;
+    color: $warning-text;
 }
 
 .button.danger:hover {
@@ -328,18 +410,250 @@ $text-dark: #0e1420;
     margin-right: 0;
 }
 
+// A button that takes the whole width of its section, under the previous part.
+.button.block {
+    margin-right: 0;
+    margin-top: 8rem;
+}
+
+// Two buttons side by side, each with half of the line; a long text continues on a second line.
+.button.half {
+    flex: 1 0 0;
+    padding: 0 6rem;
+    white-space: normal;
+    text-align: center;
+}
+
+// Section "Groups": the list keeps its height and is the only part of the menu with a scroll bar; under it,
+// the button that creates a group, with a dashed line around it (made of small pieces).
+.section.groups .section-title {
+    margin-bottom: 6rem;
+}
+
+.group-list {
+    display: flex;
+    flex-direction: row;
+    height: 144rem;
+}
+
+.group-rows {
+    display: flex;
+    flex-direction: column;
+    flex: 1 0 0;
+    min-width: 0;
+    margin-right: 8rem;
+    overflow: hidden;
+}
+
+.scroll-track {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    width: 6rem;
+    background-color: $border;
+    border-radius: 3rem;
+}
+
+.scroll-thumb {
+    width: 6rem;
+    height: 100%;
+    background-color: $text-dim;
+    border-radius: 3rem;
+}
+
+.dashed-host {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 44rem;
+    margin-top: 6rem;
+}
+
+.dashed-piece {
+    position: absolute;
+    background-color: $text-dim;
+}
+
+.dashed-label {
+    color: $text;
+    font-size: 14rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+// Mark of the corner by which the menu is resized.
+.menu-grip {
+    position: absolute;
+    right: 3rem;
+    bottom: 3rem;
+    width: 14rem;
+    height: 14rem;
+}
+
 .confirm {
     display: flex;
     flex-direction: column;
-    padding: 8rem;
+    margin-top: 8rem;
+    padding: 10rem;
     border: 1rem solid $warning;
-    border-radius: 4rem;
+    border-radius: 6rem;
 }
 
 .confirm-text {
     margin-bottom: 8rem;
-    font-size: 13rem;
+    font-size: 14rem;
     color: $text;
+}
+
+// Edit mode, as in screen 8 of the sketch. The notice sits under the bars; a dashed line goes around the
+// area of each bar and a solid one around the selected item. The lines are made of small pieces placed
+// around the icons (the engine draws no dashed border), so nothing of the mod lies over an icon.
+.banner {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+    height: 52rem;
+    padding: 0 6rem 0 16rem;
+    background-color: $warning;
+    border-radius: 8rem;
+    box-shadow: 0 8rem 24rem rgba(0, 0, 0, 0.35);
+    color: $banner-dark;
+}
+
+.banner-text {
+    margin-right: 16rem;
+    font-size: 15rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.banner-done {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    height: 40rem;
+    padding: 0 18rem;
+    background-color: $banner-dark;
+    border-radius: 6rem;
+    color: #ffffff;
+    font-size: 14rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.banner-done:hover {
+    background-color: #000000;
+}
+
+.edit-dash {
+    position: absolute;
+    background-color: $warning;
+}
+
+.select-edge {
+    position: absolute;
+    background-color: $warning;
+}
+
+// Where a dragged item would go: the whole place it would take is opened between the icons and marked, or
+// a frame goes around the collapse button of the other bar. The item held by the mouse gets a frame of its
+// own. All placed by the code.
+.drop-line {
+    position: absolute;
+    display: none;
+    box-sizing: border-box;
+    width: 40rem;
+    height: 40rem;
+    background-color: rgba(255, 154, 60, 0.18);
+    border: 2rem solid $warning;
+    border-radius: 6rem;
+    pointer-events: none;
+}
+
+.drop-box {
+    position: absolute;
+    display: none;
+    box-sizing: border-box;
+    width: 46rem;
+    height: 46rem;
+    border: 2rem solid $warning;
+    border-radius: 8rem;
+    pointer-events: none;
+}
+
+.drag-frame {
+    position: absolute;
+    display: none;
+    box-sizing: border-box;
+    width: 44rem;
+    height: 44rem;
+    border: 2rem solid $warning;
+    border-radius: 8rem;
+    box-shadow: 0 10rem 24rem rgba(0, 0, 0, 0.45);
+    pointer-events: none;
+}
+
+// Field of the item selected in the edit mode: its name with "Clear" and "Confirm" on the same line and,
+// under them, the button that sends the item to the other bar.
+.name-field {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 360rem;
+    padding: 10rem;
+    background-color: $panel;
+    border: 1rem solid $warning;
+    border-radius: 8rem;
+    box-shadow: 0 8rem 24rem rgba(0, 0, 0, 0.35);
+    color: $text;
+    font-size: 14rem;
+}
+
+.name-label {
+    font-size: 12rem;
+    color: $text-dim;
+}
+
+.name-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-top: 6rem;
+}
+
+.name-input {
+    flex: 1 1 0;
+    min-width: 0;
+    box-sizing: border-box;
+    height: 44rem;
+    padding: 0 10rem;
+    background-color: $field;
+    border: 1rem solid $button-border;
+    border-radius: 6rem;
+    color: $text;
+    font-size: 14rem;
+}
+
+.name-input:focus {
+    border-color: $accent;
+}
+
+.name-clear {
+    margin-left: 6rem;
+    margin-right: 0;
+}
+
+.name-move {
+    margin-right: 0;
+    margin-top: 6rem;
 }
 
 // Host of the "?" marks drawn over buttons that show nothing.
