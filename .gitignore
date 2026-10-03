@@ -426,3 +426,7 @@ FodyWeavers.xsd
 
 # Official VS Code C# Dev Kit Extension exclusion
 #*.lscache
+
+# Toolbar Organizer: the publish profiles of the game modding toolchain are part of the project
+!ToolbarOrganizer/Properties/PublishProfiles/*.pubxml
+ToolbarOrganizer/Library/

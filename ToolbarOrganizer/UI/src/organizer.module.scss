@@ -1,0 +1,205 @@
+// "Projeto" theme (default). It applies only to the mod's own elements; the buttons of other mods keep
+// the look the game gives them. Sizes are in rem: in this game 1rem is one pixel at 1920 wide.
+// The game UI engine lays everything out with flexbox, so every box states its display and direction.
+
+$panel: #18202e;
+$border: #2c3a52;
+$button: #1b2434;
+$button-border: #5a6f94;
+$accent: #4bc3f1;
+$warning: #ff9a3c;
+$text: #e6eef8;
+$text-dim: #9fb0c8;
+$text-dark: #0e1420;
+
+.root {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    width: 40rem;
+    height: 40rem;
+    pointer-events: auto;
+    z-index: 10;
+}
+
+.mod-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 40rem;
+    height: 40rem;
+    background-color: $button;
+    border: 1rem solid $button-border;
+    border-radius: 6rem;
+}
+
+.mod-button:hover,
+.mod-button.open {
+    border-color: $accent;
+}
+
+.mod-icon {
+    width: 34rem;
+    height: 34rem;
+}
+
+.menu {
+    position: absolute;
+    top: 46rem;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 320rem;
+    padding: 12rem;
+    background-color: $panel;
+    border: 1rem solid $border;
+    border-radius: 6rem;
+    color: $text;
+    font-size: 14rem;
+}
+
+.title {
+    font-size: 16rem;
+    font-weight: bold;
+    color: $text;
+}
+
+.sub {
+    margin-top: 2rem;
+    font-size: 12rem;
+    color: $text-dim;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    margin-top: 12rem;
+    padding-top: 10rem;
+    border-top: 1rem solid $border;
+}
+
+.section-head {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8rem;
+}
+
+.label {
+    font-size: 12rem;
+    text-transform: uppercase;
+    color: $text-dim;
+}
+
+.count {
+    font-size: 12rem;
+    color: $accent;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.spacer {
+    flex-grow: 1;
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    height: 28rem;
+    margin-right: 6rem;
+    padding: 0 12rem;
+    background-color: $button;
+    border: 1rem solid $button-border;
+    border-radius: 4rem;
+    color: $text;
+    font-size: 13rem;
+    white-space: nowrap;
+}
+
+.button:hover {
+    border-color: $accent;
+}
+
+.button.active {
+    background-color: $accent;
+    border-color: $accent;
+    color: $text-dark;
+}
+
+.button.danger {
+    border-color: $warning;
+    color: $warning;
+}
+
+.button.danger:hover {
+    background-color: $warning;
+    color: $text-dark;
+}
+
+.button.last {
+    margin-right: 0;
+}
+
+.confirm {
+    display: flex;
+    flex-direction: column;
+    padding: 8rem;
+    border: 1rem solid $warning;
+    border-radius: 4rem;
+}
+
+.confirm-text {
+    margin-bottom: 8rem;
+    font-size: 13rem;
+    color: $text;
+}
+
+// Host of the "?" marks drawn over buttons that show nothing.
+.overlays {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+}
+
+.generic {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    color: $text;
+    font-size: 24rem;
+    font-weight: bold;
+}
+
+// Name shown under a button of another mod that has no tooltip of its own.
+.tip {
+    position: absolute;
+    display: none;
+    flex-direction: row;
+    align-items: center;
+    padding: 4rem 8rem;
+    background-color: $panel;
+    border: 1rem solid $border;
+    border-radius: 4rem;
+    color: $text;
+    font-size: 14rem;
+    white-space: nowrap;
+    pointer-events: none;
+}
