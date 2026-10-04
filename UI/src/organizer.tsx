@@ -68,19 +68,19 @@ import {
     TEXT_PREFIX,
     withName,
 } from "./model";
-import icon from "./images/ToolbarOrganizer_34x34.png";
-import checkIcon from "./images/ToolbarOrganizer_check.svg";
-import chevronLeft from "./images/ToolbarOrganizer_chevron_left.svg";
-import chevronRight from "./images/ToolbarOrganizer_chevron_right.svg";
-import closeIcon from "./images/ToolbarOrganizer_close.svg";
-import dotsIcon from "./images/ToolbarOrganizer_dots.svg";
-import folderIcon from "./images/ToolbarOrganizer_folder.svg";
-import handleIcon from "./images/ToolbarOrganizer_handle.svg";
-import handleEditIcon from "./images/ToolbarOrganizer_handle_edit.svg";
-import pencilIcon from "./images/ToolbarOrganizer_pencil.svg";
-import resizeMark from "./images/ToolbarOrganizer_resize.svg";
-import trashIcon from "./images/ToolbarOrganizer_trash.svg";
-import warningIcon from "./images/ToolbarOrganizer_warning.svg";
+import icon from "./images/toolbox_organizer_icon_34x34.png";
+import checkIcon from "./images/toolbox_organizer_check.svg";
+import chevronLeft from "./images/toolbox_organizer_chevron_left.svg";
+import chevronRight from "./images/toolbox_organizer_chevron_right.svg";
+import closeIcon from "./images/toolbox_organizer_close.svg";
+import dotsIcon from "./images/toolbox_organizer_dots.svg";
+import folderIcon from "./images/toolbox_organizer_folder.svg";
+import handleIcon from "./images/toolbox_organizer_handle.svg";
+import handleEditIcon from "./images/toolbox_organizer_handle_edit.svg";
+import pencilIcon from "./images/toolbox_organizer_pencil.svg";
+import resizeMark from "./images/toolbox_organizer_resize.svg";
+import trashIcon from "./images/toolbox_organizer_trash.svg";
+import warningIcon from "./images/toolbox_organizer_warning.svg";
 import styles from "./organizer.module.scss";
 
 function classes(...names: (string | false | undefined)[]): string {
