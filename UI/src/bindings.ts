@@ -15,6 +15,10 @@ export const modIndex$ = bindValue<string>(GROUP, "modIndex", "");
 /** Probe id -> UI module names, as JSON. */
 export const probeIndex$ = bindValue<string>(GROUP, "probeIndex", "");
 
+/** Name of the address registered by the C# part for the images of the mod ("coui://<name>/"); empty when
+ *  none was registered, and the address shared by all the mods is used. */
+export const imagesHost$ = bindValue<string>(GROUP, "imagesHost", "");
+
 export function saveLayout(json: string): void {
     trigger(GROUP, "saveLayout", json);
 }

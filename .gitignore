@@ -428,5 +428,5 @@ FodyWeavers.xsd
 #*.lscache
 
 # Toolbar Organizer: the publish profiles of the game modding toolchain are part of the project
-!ToolbarOrganizer/Properties/PublishProfiles/*.pubxml
-ToolbarOrganizer/Library/
+!Properties/PublishProfiles/*.pubxml
+/Library/

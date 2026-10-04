@@ -18,6 +18,7 @@ namespace ToolbarOrganizer.Systems
     ///   layout     (string) saved layout as JSON, empty when there is none
     ///   modIndex   (string) mods that use the top toolbars, with official name and image files, as JSON
     ///   probeIndex (string) probe id -> UI module names, as JSON
+    ///   imagesHost (string) name of the mod's own address for its images; empty when none was registered
     ///
     /// Commands sent by the UI:
     ///   saveLayout(string json)          stores the layout and publishes it back
@@ -65,6 +66,7 @@ namespace ToolbarOrganizer.Systems
             AddBinding(m_Layout = new ValueBinding<string>(kGroup, "layout", LayoutStore.Load()));
             AddBinding(m_ModIndex = new ValueBinding<string>(kGroup, "modIndex", string.Empty));
             AddBinding(m_ProbeIndex = new ValueBinding<string>(kGroup, "probeIndex", string.Empty));
+            AddBinding(new ValueBinding<string>(kGroup, "imagesHost", Mod.ImagesHost ?? string.Empty));
 
             AddBinding(new TriggerBinding<string>(kGroup, "saveLayout", OnSaveLayout));
             AddBinding(new TriggerBinding(kGroup, "resetAll", OnResetAll));

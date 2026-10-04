@@ -3,6 +3,15 @@
 // The game UI engine lays everything out with flexbox, so every box states its display and direction.
 // The menu follows screen 17 of the project sketch and the edit mode follows screen 8: same sizes, same
 // colors, same order of the parts. The engine has no "gap" between flex items: the spaces are margins.
+// Drawing order (z-index). These orders only sort what is inside the left bar of the game, where the root of
+// the mod lives: the mod's own elements and the buttons of the left bar. Nothing of the mod is put over the
+// windows of the game or of the other mods. The mod's own buttons on the bars and the lines of the edit mode
+// 10 (over anything else that other mods keep inside the bars); buttons of groups 16; panel of the "+" button
+// 14 (its icons 15 and the buttons of groups inside it 16, set by the code); panels of groups 20 and up, three
+// steps for each open panel (its background, its icons, its warning), so the icons of a panel are over
+// everything of the panels under it; notice of the edit mode 1055; menu 1060; marks of the edit mode 1065 to
+// 1067; field of the item 1070; list of the handle of a panel 1075; tooltip 1090. What the mouse holds is set
+// to 2000 by the code.
 
 $panel: #18202e;
 $border: #2c3a52;
@@ -26,10 +35,11 @@ $banner-dark: #1a1206;
     width: 40rem;
     height: 40rem;
     pointer-events: auto;
-    z-index: 10;
 }
 
 .mod-button {
+    position: relative;
+    z-index: 10;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -68,6 +78,7 @@ $banner-dark: #1a1206;
     left: 46rem;
     display: flex;
     flex-direction: row;
+    z-index: 10;
 }
 
 .toggle-host-right {
@@ -76,6 +87,7 @@ $banner-dark: #1a1206;
     left: 0;
     display: none;
     flex-direction: row;
+    z-index: 10;
 }
 
 .toggle {
@@ -111,6 +123,7 @@ $banner-dark: #1a1206;
     left: 0;
     display: flex;
     flex-direction: row;
+    z-index: 10;
 }
 
 .toggle.open {
@@ -126,12 +139,14 @@ $banner-dark: #1a1206;
 .more-piece {
     position: absolute;
     background-color: $panel;
+    z-index: 14;
 }
 
 // Border of the panel: four lines drawn over the outer strips of the background.
 .more-edge {
     position: absolute;
     background-color: $border;
+    z-index: 14;
 }
 
 // Edge of the panel that is dragged to change its number of columns: the side that is free to grow.
@@ -139,6 +154,7 @@ $banner-dark: #1a1206;
     position: absolute;
     display: flex;
     flex-direction: row;
+    z-index: 15;
 }
 
 .more-grip {
@@ -205,6 +221,7 @@ $banner-dark: #1a1206;
     box-shadow: 0 8rem 24rem rgba(0, 0, 0, 0.35);
     color: $text;
     font-size: 14rem;
+    z-index: 1060;
 }
 
 // Name of the mod and, on the same line, at the right, the information mark.
@@ -406,6 +423,12 @@ $banner-dark: #1a1206;
     color: $text-dark;
 }
 
+// The button whose confirmation is open under it (screen 47).
+.button.danger.asking {
+    background-color: $warning;
+    color: $text-dark;
+}
+
 .button.last {
     margin-right: 0;
 }
@@ -425,24 +448,37 @@ $banner-dark: #1a1206;
 }
 
 // Section "Groups": the list keeps its height and is the only part of the menu with a scroll bar; under it,
-// the button that creates a group, with a dashed line around it (made of small pieces).
+// the button that creates a group, with a dashed line around it (made of small pieces). The form of a new
+// group and the confirmation of a deletion take the place of the list and of the button, so the menu keeps
+// its size.
 .section.groups .section-title {
     margin-bottom: 6rem;
 }
 
-.group-list {
+// A list that keeps its height: the rows move behind it and the bar at the right shows where they are.
+.scroll-list {
     display: flex;
     flex-direction: row;
-    height: 144rem;
 }
 
-.group-rows {
+.scroll-rows {
     display: flex;
     flex-direction: column;
     flex: 1 0 0;
     min-width: 0;
     margin-right: 8rem;
     overflow: hidden;
+}
+
+// No bar (every row fits): the rows take the whole width.
+.scroll-rows.full {
+    margin-right: 0;
+}
+
+.scroll-inner {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
 }
 
 .scroll-track {
@@ -455,10 +491,206 @@ $banner-dark: #1a1206;
 }
 
 .scroll-thumb {
+    flex-shrink: 0;
     width: 6rem;
-    height: 100%;
     background-color: $text-dim;
     border-radius: 3rem;
+}
+
+.scroll-thumb:hover {
+    background-color: $text;
+}
+
+// A group in the list: icon, name and quantity, bar, order, rename and delete.
+.group-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    height: 44rem;
+    margin-bottom: 6rem;
+    padding-left: 10rem;
+    border: 1rem solid $border;
+    border-radius: 6rem;
+}
+
+.group-row.last-row {
+    margin-bottom: 0;
+}
+
+.group-row.editing {
+    border-color: $accent;
+}
+
+.group-row-name {
+    flex-shrink: 1;
+    min-width: 0;
+    overflow: hidden;
+    font-size: 14rem;
+    font-weight: 700;
+    color: $text;
+    white-space: nowrap;
+}
+
+.group-row-bar {
+    flex-shrink: 0;
+    width: 70rem;
+    margin-right: 8rem;
+    font-size: 13rem;
+    color: #c9d4e4;
+}
+
+.group-row-order {
+    flex-shrink: 0;
+    width: 52rem;
+    margin-right: 8rem;
+    font-size: 13rem;
+    color: #c9d4e4;
+}
+
+// Quantity of a group (screen 38): after the name, raised, in a circle without background, in small letters.
+// The margin under it lifts it: its middle sits 5 above the middle of the name. Same size wherever it is
+// shown: button of the group, title of the panel and row of the list.
+.count-badge {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    min-width: 18rem;
+    height: 18rem;
+    margin-left: 4rem;
+    margin-bottom: 10rem;
+    padding: 0 3rem;
+    border: 1rem solid $text-dim;
+    border-radius: 9rem;
+    color: $text-dim;
+    font-size: 11rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.row-action {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 44rem;
+    height: 42rem;
+    margin-right: 8rem;
+    border-radius: 6rem;
+}
+
+.row-action.last {
+    margin-right: 0;
+}
+
+.row-action:hover {
+    background-color: $button-hover;
+}
+
+.icon16 {
+    width: 16rem;
+    height: 16rem;
+}
+
+// Row being edited (screen 37): the field of the name, then the bar and the order as buttons that change to
+// the next value at each click, in the columns the row already had. The width of the field is stated: the
+// game UI engine does not stretch a text field by itself.
+.name-input.row-input {
+    flex: 0 0 auto;
+    width: 150rem;
+    height: 34rem;
+    margin-right: 8rem;
+}
+
+.row-cycle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    height: 34rem;
+    margin-right: 8rem;
+    background-color: $button;
+    border: 1rem solid $button-border;
+    border-radius: 6rem;
+    color: $text;
+    font-size: 13rem;
+    white-space: nowrap;
+}
+
+.row-cycle:hover {
+    border-color: $accent;
+}
+
+.row-cycle.for-bar {
+    width: 70rem;
+}
+
+.row-cycle.for-order {
+    width: 52rem;
+}
+
+// Form of a new group: its name and its bar, "Cancel" and "Confirm".
+.group-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    height: 194rem;
+    padding: 0 12rem;
+    border: 1rem solid $accent;
+    border-radius: 6rem;
+}
+
+// The width is stated: the game UI engine does not stretch a text field to the width of its column.
+.name-input.form-input {
+    flex: 0 0 auto;
+    width: 100%;
+    margin-top: 4rem;
+}
+
+.form-problem {
+    margin-top: 4rem;
+    font-size: 12rem;
+    color: $warning-text;
+}
+
+// From the block of the name to the block of the bar: 12 (screen 26); 8 while the warning of a repeated
+// name is shown under the field (screen 31).
+.form-second {
+    margin-top: 12rem;
+}
+
+.form-second.tight {
+    margin-top: 8rem;
+}
+
+.form-row {
+    margin-top: 4rem;
+}
+
+// Confirmation of the deletion of a group, in the place of the list.
+.group-confirm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    height: 194rem;
+    padding: 0 12rem;
+    border: 1rem solid $warning;
+    border-radius: 6rem;
+}
+
+.group-confirm .confirm-text,
+.group-menu-confirm .confirm-text {
+    margin-bottom: 12rem;
+    line-height: 20rem;
 }
 
 .dashed-host {
@@ -481,15 +713,6 @@ $banner-dark: #1a1206;
     font-size: 14rem;
     font-weight: 600;
     white-space: nowrap;
-}
-
-// Mark of the corner by which the menu is resized.
-.menu-grip {
-    position: absolute;
-    right: 3rem;
-    bottom: 3rem;
-    width: 14rem;
-    height: 14rem;
 }
 
 .confirm {
@@ -522,6 +745,7 @@ $banner-dark: #1a1206;
     border-radius: 8rem;
     box-shadow: 0 8rem 24rem rgba(0, 0, 0, 0.35);
     color: $banner-dark;
+    z-index: 1055;
 }
 
 .banner-text {
@@ -555,11 +779,13 @@ $banner-dark: #1a1206;
 .edit-dash {
     position: absolute;
     background-color: $warning;
+    z-index: 10;
 }
 
 .select-edge {
     position: absolute;
     background-color: $warning;
+    z-index: 1065;
 }
 
 // Where a dragged item would go: the whole place it would take is opened between the icons and marked, or
@@ -575,6 +801,7 @@ $banner-dark: #1a1206;
     border: 2rem solid $warning;
     border-radius: 6rem;
     pointer-events: none;
+    z-index: 1066;
 }
 
 .drop-box {
@@ -586,6 +813,7 @@ $banner-dark: #1a1206;
     border: 2rem solid $warning;
     border-radius: 8rem;
     pointer-events: none;
+    z-index: 1066;
 }
 
 .drag-frame {
@@ -598,6 +826,7 @@ $banner-dark: #1a1206;
     border-radius: 8rem;
     box-shadow: 0 10rem 24rem rgba(0, 0, 0, 0.45);
     pointer-events: none;
+    z-index: 1067;
 }
 
 // Field of the item selected in the edit mode: its name with "Clear" and "Confirm" on the same line and,
@@ -615,6 +844,7 @@ $banner-dark: #1a1206;
     box-shadow: 0 8rem 24rem rgba(0, 0, 0, 0.35);
     color: $text;
     font-size: 14rem;
+    z-index: 1070;
 }
 
 .name-label {
@@ -646,6 +876,12 @@ $banner-dark: #1a1206;
     border-color: $accent;
 }
 
+// A name that cannot be used (empty, or the one of another group).
+.name-input.invalid,
+.name-input.invalid:focus {
+    border-color: $warning;
+}
+
 .name-clear {
     margin-left: 6rem;
     margin-right: 0;
@@ -654,6 +890,390 @@ $banner-dark: #1a1206;
 .name-move {
     margin-right: 0;
     margin-top: 6rem;
+}
+
+// "Put in a group": the button and, while it is open, the list of the groups with the bar of each one.
+.button.picking {
+    border-color: $accent;
+}
+
+.pick-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 6rem;
+    padding: 4rem;
+    border: 1rem solid $border;
+    border-radius: 6rem;
+}
+
+.pick-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    height: 44rem;
+    margin-bottom: 2rem;
+    padding: 0 12rem;
+    border-radius: 4rem;
+}
+
+.pick-row:hover {
+    background-color: #24314a;
+}
+
+.pick-name {
+    flex-grow: 1;
+    overflow: hidden;
+    font-size: 14rem;
+    color: $text;
+    white-space: nowrap;
+}
+
+.pick-side {
+    flex-shrink: 0;
+    margin-left: 8rem;
+    font-size: 13rem;
+    color: $text-dim;
+}
+
+// Button of a group, as in screen 17 of the sketch: icon, name and quantity. It is placed on its bar by
+// the code, among the icons; until then it stays off the screen.
+.group-button {
+    position: absolute;
+    left: 0;
+    top: -10000rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    box-sizing: border-box;
+    height: 40rem;
+    padding: 0 12rem;
+    background-color: $button;
+    border: 1rem solid $button-border;
+    border-radius: 6rem;
+    color: $text;
+    font-size: 14rem;
+    font-weight: 700;
+    white-space: nowrap;
+    z-index: 16;
+}
+
+.group-button:hover {
+    border-color: $accent;
+}
+
+// Panel open: thicker line; the padding gives the extra rem back so the button keeps its width.
+.group-button.open {
+    padding: 0 11rem;
+    border: 2rem solid $accent;
+}
+
+.group-icon {
+    flex-shrink: 0;
+    width: 16rem;
+    height: 16rem;
+    margin-right: 8rem;
+}
+
+.group-name {
+    white-space: nowrap;
+}
+
+// Panel of a group, as in screen 17 of the sketch. Its icons are the real buttons of the mods, brought
+// into it by the code. The background is made of pieces drawn around the places of the icons, never over
+// them, so every icon stays visible and keeps receiving its own clicks; the line around the panel is a
+// frame that does not take the mouse.
+.panel {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+}
+
+.panel-piece {
+    position: absolute;
+    background-color: $panel;
+}
+
+.panel-piece.top {
+    border-radius: 8rem 8rem 0 0;
+}
+
+.panel-piece.bottom {
+    border-radius: 0 0 8rem 8rem;
+}
+
+.panel-frame {
+    position: absolute;
+    box-sizing: border-box;
+    border: 1rem solid $border;
+    border-radius: 8rem;
+    pointer-events: none;
+}
+
+// Header: handle, name and quantity, list of options and close.
+.panel-head {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 44rem;
+    color: $text;
+}
+
+.panel-handle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    width: 18rem;
+    height: 44rem;
+}
+
+.panel-handle-mark {
+    width: 10rem;
+    height: 16rem;
+}
+
+.panel-title {
+    flex-shrink: 0;
+    font-size: 16rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+// Panel without title bar (screen 43): the handle sits in a tab outside the left edge of the panel, at the
+// height of the first row of icons. Its right side has no line and covers the line of the panel.
+.panel-ear {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 19rem;
+    height: 40rem;
+    background-color: $panel;
+    border: 1rem solid $border;
+    border-right-width: 0;
+    border-radius: 6rem 0 0 6rem;
+}
+
+.panel-button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    width: 44rem;
+    height: 44rem;
+    margin-right: 8rem;
+    background-color: $button;
+    border: 1rem solid $button-border;
+    border-radius: 6rem;
+}
+
+.panel-button:hover {
+    border-color: $accent;
+}
+
+.panel-button.open {
+    border: 2rem solid $accent;
+}
+
+.panel-button.last {
+    margin-right: 0;
+}
+
+.panel-name-input {
+    margin-right: 8rem;
+}
+
+// Name under an icon: one column wide, two lines at most (width and height are given by the code).
+.panel-label {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100rem;
+    height: 30rem;
+    overflow: hidden;
+    color: #c9d4e4;
+    font-size: 12rem;
+    line-height: 15rem;
+    text-align: center;
+    pointer-events: none;
+}
+
+// Edges dragged to resize the panel (right: columns; bottom: rows) and the corner (both), with its mark.
+.panel-edge {
+    position: absolute;
+}
+
+.panel-corner {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 20rem;
+    height: 20rem;
+}
+
+.panel-grip {
+    width: 14rem;
+    height: 14rem;
+    margin: 0 3rem 3rem 0;
+}
+
+// "Panel full" (screens 33 and 40): a block, icon over the text, in the middle of the panel; a line, icon and
+// text side by side, in the middle of the icons of a panel of one or two rows.
+.panel-full-host {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+// A block that would cover the title bar starts with the icons instead.
+.panel-full-host.from-top {
+    align-items: flex-start;
+}
+
+.panel-full {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    padding: 14rem 22rem;
+    background-color: rgba(11, 22, 34, 0.94);
+    border: 2rem solid $warning;
+    border-radius: 8rem;
+    box-shadow: 0 8rem 24rem rgba(0, 0, 0, 0.45);
+}
+
+.panel-full-icon {
+    width: 64rem;
+    height: 58rem;
+}
+
+.panel-full-text {
+    margin-top: 8rem;
+    color: $warning-text;
+    font-size: 20rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.panel-full.inline {
+    flex-direction: row;
+    padding: 5rem 14rem;
+}
+
+.panel-full.inline .panel-full-icon {
+    width: 26rem;
+    height: 24rem;
+}
+
+.panel-full.inline .panel-full-text {
+    margin-top: 0;
+    margin-left: 10rem;
+    font-size: 16rem;
+}
+
+// List opened by the "⋮" of a panel.
+.group-menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 300rem;
+    z-index: 1075;
+    padding: 8rem;
+    background-color: $panel;
+    border: 1rem solid $border;
+    border-radius: 8rem;
+    box-shadow: 0 8rem 24rem rgba(0, 0, 0, 0.35);
+    color: $text;
+    font-size: 14rem;
+}
+
+.menu-option {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    height: 44rem;
+    margin-bottom: 2rem;
+    padding: 0 12rem;
+    border-radius: 4rem;
+    color: $text;
+    font-size: 14rem;
+}
+
+.menu-option:hover {
+    background-color: $button-hover;
+}
+
+.menu-option.current {
+    background-color: #24314a;
+    font-weight: 700;
+}
+
+.menu-option.warn {
+    margin-bottom: 0;
+    color: $warning-text;
+}
+
+.menu-option.end {
+    margin-bottom: 0;
+}
+
+// List opened by a right click on the handle of a panel (screen 43), drawn where the click was.
+.ctx-menu {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 230rem;
+    padding: 8rem;
+    background-color: $panel;
+    border: 1rem solid $border;
+    border-radius: 8rem;
+    box-shadow: 0 8rem 24rem rgba(0, 0, 0, 0.35);
+    color: $text;
+    font-size: 14rem;
+    z-index: 1075;
+}
+
+.menu-option-text {
+    flex-grow: 1;
+}
+
+.menu-check {
+    flex-shrink: 0;
+    width: 16rem;
+    height: 16rem;
+}
+
+.menu-line {
+    flex-shrink: 0;
+    height: 1rem;
+    margin: 4rem 0 6rem 0;
+    background-color: $border;
+}
+
+.group-menu-confirm {
+    display: flex;
+    flex-direction: column;
+    padding: 4rem;
 }
 
 // Host of the "?" marks drawn over buttons that show nothing.
@@ -676,6 +1296,7 @@ $banner-dark: #1a1206;
     color: $text;
     font-size: 24rem;
     font-weight: bold;
+    z-index: 10;
 }
 
 // Name shown under a button of another mod that has no tooltip of its own.
@@ -692,4 +1313,5 @@ $banner-dark: #1a1206;
     font-size: 14rem;
     white-space: nowrap;
     pointer-events: none;
+    z-index: 1090;
 }
